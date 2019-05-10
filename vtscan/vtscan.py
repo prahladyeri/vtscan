@@ -47,7 +47,8 @@ def scan(hash, log_output=False):
 	#read key from config.json
 	apppath = os.path.dirname(os.path.realpath(__file__))
 	#print("apppath: ", apppath)
-	fp = open(apppath + '/config.json', 'r')
+	cfname = os.path.join(apppath, 'config.json')
+	fp = open(cfname, 'r')
 	ss = fp.read()
 	#print("ss: ", ss)
 	obj = json.loads(ss)
@@ -55,7 +56,7 @@ def scan(hash, log_output=False):
 	#print("obj: ", obj)
 	#print('foo')
 	if obj['api_key'] == "":
-		print("VirusTotal API key is empty.\nKindly register an account on https://www.virustotal.com if you haven't, get your API Key from community profile and then put it in:\n\n" + apppath + "/config.json.\n\nRefer this link for more help: https://www.virustotal.com/en/documentation/public-api/")
+		print("VirusTotal API key is empty.\nKindly register an account on https://www.virustotal.com if you haven't, get your API Key from community profile and then put it in:\n\n" + cfname + ".\n\nRefer this link for more help: https://www.virustotal.com/en/documentation/public-api/")
 		return
 
 	#print("verbose output: ",verbose)

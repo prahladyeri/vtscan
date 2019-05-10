@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
 import os
-import sys
+from setuptools import setup, find_packages
 
-def uninstall_parts(package):
-	pass
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-if 'uninstall' in sys.argv:
-	print('Uninstall complete')
-	sys.exit(0)
-
-#INSTALL IT
-#the_version = open("VERSION").read().strip()
-from distutils.core import setup
-s = setup(name='vtscan',
-	version="1.0.2",
-	description='Utility to scan for malicious files using the VirusTotal API.',
+s = setup(
+	name='vtscan',
+	version="1.0.3",
 	license='MIT',
+	description='Utility to scan for malicious files using the VirusTotal API.',
+	long_description=read("README.md"),
+	long_description_content_type='text/markdown',
+	keywords="security,scanner",
+	url='https://github.com/prahladyeri/vtscan',
+	packages=find_packages(),
+	#scripts=['./config.json'],
+	#package_data={'vtscan': ['config.json']},
+	include_package_data=True,
+	entry_points={
+		"console_scripts": [
+			"vtscan = vtscan.vtscan:main",
+		],
+	},
+	install_requires=['requests'],
 	author='Prahlad Yeri',
 	author_email='prahladyeri@yahoo.com',
-	url='https://github.com/prahladyeri/vtscan',
-	#py_modules=['hotspotd','cli'],
-	packages=['vtscan'],
-	package_dir={'vtscan': ''},
-	package_data={'vtscan': ['./']},
-	scripts=['./vtscan', './config.json']
-	#data_files=[('config',['run.dat'])],
 	)
