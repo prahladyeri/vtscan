@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from vtscan import vtscan
 from setuptools import setup, find_packages
 
 def read(fname):
@@ -7,7 +8,7 @@ def read(fname):
 
 s = setup(
 	name='vtscan',
-	version="1.0.3",
+	version=vtscan.__version__, #"1.0.3",
 	license='MIT',
 	description='Utility to scan for malicious files using the VirusTotal API.',
 	long_description=read("README.md"),

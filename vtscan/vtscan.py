@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+##
+# VTScan - Utility to scan for malicious files using the VirusTotal API
+#
+# @author Prahlad Yeri<prahladyeri@yahoo.com>
+# @license MIT
+# @modified 13-05-2019
+#
 import requests
 import argparse
 import os
@@ -6,7 +12,7 @@ import time
 import hashlib
 import json
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 def checkkey(kee):
 	try:
@@ -39,8 +45,8 @@ def fileexists(filepath):
 		else:
 			print("There is no file at:" + filepath)
 			exit()
-	except e as Exception:
-			print(e)
+	except Exception as ex:
+			print(ex)
 
 
 def scan(hash, log_output=False):
