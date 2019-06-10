@@ -3,7 +3,7 @@ Utility to scan for malicious files using the VirusTotal API
 
 # Installation
 
-pip3 install vtscan
+pip install vtscan
 
 # Usage
 

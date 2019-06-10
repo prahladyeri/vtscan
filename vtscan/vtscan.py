@@ -12,7 +12,7 @@ import time
 import hashlib
 import json
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 def checkkey(kee):
 	try:
