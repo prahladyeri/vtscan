@@ -98,7 +98,7 @@ def main():
 	banner = """%s version %s
 %s
 
-Copyright (c) 2019 Prahlad Yeri. All rights reserved.
+Copyright (c) 2019 Prahlad Yeri.
 
 This work is licensed under the terms of the MIT license.  
 For a copy, see <https://opensource.org/licenses/MIT>.
