@@ -7,12 +7,11 @@
 #
 import requests
 import argparse
-import os
+import os, sys
 import time
 import hashlib
 import json
-
-__version__ = "1.0.4"
+from vtscan import __title__, __description__, __version__
 
 def checkkey(kee):
 	try:
@@ -96,14 +95,25 @@ def scan(hash, log_output=False):
 	#print(json_response)
 
 def main():
-	print("vtscan v" + __version__ + "\n")
-	parser = argparse.ArgumentParser(description="Scan file hashes against Virus Total Database.")
+	banner = """%s version %s
+%s
+
+Copyright (c) 2019 Prahlad Yeri. All rights reserved.
+
+This work is licensed under the terms of the MIT license.  
+For a copy, see <https://opensource.org/licenses/MIT>.
+""" % (__title__, __version__, __description__)
+	print(banner)
+	parser = argparse.ArgumentParser()
 	parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt')
 	parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to json file')
-	#parser.add_argument('-v', '--verbose',  default=False, action='store_true', help='Verbose output')
-	#parser.add_argument('-v', help='Verbose')
-	#parser.add_argument('-v', '--version', help='Version', action='store_true')
+	parser.add_argument('-v', '--version', help='Version', action='store_true')
 	args = parser.parse_args()
+	
+	if args.version:
+		sys.exit()
+	# if args.input_file is None:
+		# parser.error("input_file is required")
 	#calculate hash of file
 	hash = hashlib.sha1()
 	with open(args.input_file,'rb') as fp:

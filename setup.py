@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
-from vtscan import vtscan
+import vtscan
+from vtscan import __version__, __description__, __author__, __email__, __license__
 from setuptools import setup, find_packages
 
 def read(fname):
@@ -8,9 +9,9 @@ def read(fname):
 
 s = setup(
 	name='vtscan',
-	version=vtscan.__version__,
-	license='MIT',
-	description='Utility to scan for malicious files using the VirusTotal API.',
+	version=__version__,
+	license=__license__,
+	description=__description__,
 	long_description=read("README.md"),
 	long_description_content_type='text/markdown',
 	keywords="security,scanner",
@@ -25,6 +26,6 @@ s = setup(
 		],
 	},
 	install_requires=['requests'],
-	author='Prahlad Yeri',
-	author_email='prahladyeri@yahoo.com',
+	author=__author__,
+	author_email=__email__,
 	)
