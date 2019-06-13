@@ -6,7 +6,7 @@
 ![license](https://img.shields.io/github/license/prahladyeri/vtscan.svg)
 ![last-commit](https://img.shields.io/github/last-commit/prahladyeri/vtscan.svg)
 <!--![commit-activity](https://img.shields.io/github/commit-activity/w/prahladyeri/vtscan.svg)-->
-![follow](https://img.shields.io/twitter/follow/prahladyeri.svg?style=social)
+[![follow](https://img.shields.io/twitter/follow/prahladyeri.svg?style=social)](https://twitter.com/prahladyeri)
 # VTScan
 Utility to scan for malicious files using the VirusTotal API
 
