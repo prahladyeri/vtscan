@@ -1,3 +1,6 @@
+![pypi](https://img.shields.io/pypi/v/vtscan.svg)
+![python](https://img.shields.io/pypi/pyversions/vtscan.svg)
+
 # VTScan
 Utility to scan for malicious files using the VirusTotal API
 
