@@ -26,7 +26,7 @@ s = setup(
 		],
 	},
 	install_requires=['requests'],
-	python_requires = >=2.6,
+	python_requires = ">= 2.6",
 	author=__author__,
 	author_email=__email__,
 	)
