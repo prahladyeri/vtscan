@@ -3,7 +3,10 @@
 ![implementation](https://img.shields.io/pypi/implementation/vtscan.svg)
 <!-- https://img.shields.io/travis/prahladyeri/vtscan/master.svg -->
 ![docs](https://readthedocs.org/projects/vtscan/badge/?version=latest)
-
+![license](https://img.shields.io/github/license/prahladyeri/vtscan.svg)
+![follow](https://img.shields.io/twitter/follow/prahladyeri.svg?style=social)
+![last-commit](https://img.shields.io/github/last-commit/prahladyeri/vtscan.svg)
+![commit-activity](https://img.shields.io/github/commit-activity/w/prahladyeri/vtscan.svg)
 # VTScan
 Utility to scan for malicious files using the VirusTotal API
 
