@@ -1,5 +1,6 @@
 ![pypi](https://img.shields.io/pypi/v/vtscan.svg)
 ![python](https://img.shields.io/pypi/pyversions/vtscan.svg)
+![implementation](https://img.shields.io/pypi/implementation/vtscan.svg)
 <!-- https://img.shields.io/travis/prahladyeri/vtscan/master.svg -->
 ![docs](https://readthedocs.org/projects/vtscan/badge/?version=latest)
 
