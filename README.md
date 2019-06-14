@@ -13,11 +13,11 @@ Utility to scan for malicious files using the VirusTotal API
 
 # Installation
 
-pip install vtscan
+	pip install vtscan
 
 # Usage
 
-vtscan </path/to/filename>
+	vtscan </path/to/filename>
 
 # Notes
 
