@@ -11,7 +11,13 @@ import os, sys
 import time
 import hashlib
 import json
+from cfgsaver import cfgsaver
 from vtscan import __title__, __description__, __version__
+
+pkg_name = "vtscan"
+config_keys = ['api_key']
+config = cfgsaver.get(pkg_name)
+
 
 def checkkey(kee):
 	try:
@@ -49,23 +55,12 @@ def fileexists(filepath):
 
 
 def scan(hash, log_output=False):
-	#read key from config.json
-	apppath = os.path.dirname(os.path.realpath(__file__))
-	#print("apppath: ", apppath)
-	cfname = os.path.join(apppath, 'config.json')
-	fp = open(cfname, 'r')
-	ss = fp.read()
-	#print("ss: ", ss)
-	obj = json.loads(ss)
-	fp.close()
-	#print("obj: ", obj)
-	#print('foo')
-	if obj['api_key'] == "":
-		print("VirusTotal API key is empty.\nKindly register an account on https://www.virustotal.com if you haven't, get your API Key from community profile and then put it in:\n\n" + cfname + ".\n\nRefer this link for more help: https://www.virustotal.com/en/documentation/public-api/")
+	if 'api_key' not in config or config['api_key'] == "":
+		print("VirusTotal API key is empty.\nKindly register an account on https://www.virustotal.com if you haven't, get your API Key from community profile and then run this program with --config argument to configure it.\n\nRefer this link for more help: https://www.virustotal.com/en/documentation/public-api/")
 		return
 
 	#print("verbose output: ",verbose)
-	params = {'apikey': obj['api_key'], 'resource': hash, } #'allinfo': verbose
+	params = {'apikey': config['api_key'], 'resource': hash, } #'allinfo': verbose
 	url = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
 	json_response = url.json()
 	if log_output:
@@ -95,6 +90,7 @@ def scan(hash, log_output=False):
 	#print(json_response)
 
 def main():
+	global config
 	banner = """%s version %s
 %s
 
@@ -103,17 +99,27 @@ Copyright (c) 2019 Prahlad Yeri.
 This work is licensed under the terms of the MIT license.  
 For a copy, see <https://opensource.org/licenses/MIT>.
 """ % (__title__, __version__, __description__)
-	print(banner)
 	parser = argparse.ArgumentParser()
 	parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt')
 	parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to json file')
 	parser.add_argument('-v', '--version', help='Version', action='store_true')
+	parser.add_argument('-c', '--config', help='Version', action='store_true')
 	args = parser.parse_args()
 	
 	if args.version:
-		sys.exit()
-	# if args.input_file is None:
-		# parser.error("input_file is required")
+		print(banner)
+		return
+	if args.config:
+		config = cfgsaver.get_from_cmd(pkg_name, config_keys)
+		if config == None:
+			print("Cound't read config values, please start the program again using --config parameter")
+		return
+
+	if config == None or config['api_key'] == "":
+		config = cfgsaver.get_from_cmd(pkg_name, config_keys)
+		if config == None:
+			print("Cound't read config values, please start the program again using --config parameter")
+			return
 	#calculate hash of file
 	hash = hashlib.sha1()
 	with open(args.input_file,'rb') as fp:

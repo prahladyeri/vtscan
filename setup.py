@@ -3,6 +3,8 @@ import os
 import vtscan
 from vtscan import __version__, __description__, __author__, __email__, __license__
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import shutil
 
 pkg_name = 'vtscan'
 
@@ -36,7 +38,7 @@ s = setup(
 			"vtscan = vtscan.vtscan:main",
 		],
 	},
-	install_requires=['cfgsaver', requests],
+	install_requires=['cfgsaver', 'requests'],
 	python_requires = ">= 3.6",
 	author=__author__,
 	author_email=__email__,
