@@ -91,14 +91,10 @@ def scan(hash, log_output=False):
 
 def main():
 	global config
-	banner = """%s version %s
-%s
-
-Copyright (c) 2019 Prahlad Yeri.
-
-This work is licensed under the terms of the MIT license.  
-For a copy, see <https://opensource.org/licenses/MIT>.
-""" % (__title__, __version__, __description__)
+	#print('DEBUG', set(['-v', '--version']), sys.argv)
+	if '-v' in sys.argv or '--version' in sys.argv:
+		print( "%s version %s" % (__title__, __version__) )
+		return
 	parser = argparse.ArgumentParser()
 	parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt')
 	parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to json file')
@@ -106,9 +102,6 @@ For a copy, see <https://opensource.org/licenses/MIT>.
 	parser.add_argument('-c', '--config', help='Version', action='store_true')
 	args = parser.parse_args()
 	
-	if args.version:
-		print(banner)
-		return
 	if args.config:
 		config = cfgsaver.get_from_cmd(pkg_name, config_keys)
 		if config == None:
