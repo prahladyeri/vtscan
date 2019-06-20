@@ -39,7 +39,7 @@ s = setup(
 		],
 	},
 	install_requires=['cfgsaver', 'requests'],
-	python_requires = ">= 3.6",
+	python_requires = ">= 3.4",
 	author=__author__,
 	author_email=__email__,
     classifiers=[
