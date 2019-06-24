@@ -38,7 +38,7 @@ s = setup(
 			"vtscan = vtscan.vtscan:main",
 		],
 	},
-	install_requires=['cfgsaver', 'requests'],
+	install_requires=['cfgsaver', 'requests', 'colorama'],
 	python_requires = ">= 3.4",
 	author=__author__,
 	author_email=__email__,

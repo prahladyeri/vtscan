@@ -13,6 +13,7 @@ import hashlib
 import json
 from cfgsaver import cfgsaver
 from vtscan import __title__, __description__, __version__
+from colorama import Fore, Style
 
 pkg_name = "vtscan"
 config_keys = ['api_key']
@@ -69,25 +70,30 @@ def scan(hash, log_output=False):
 		print("Logged output to output.json")
 	response = int(json_response.get('response_code'))
 	if response == 0:
-		print ('Not found in VT Database')
+		print (Fore.YELLOW + 'Not found in VT Database' + Fore.RESET)
 	elif response == 1:
 		print ('Found in VT Database')
 		print ("permalink: ", json_response.get('permalink'))
 		positives = int(json_response.get('positives'))
+		total = int(json_response.get('total'))
 		# mcafee = str(json_response.get('report'))
-		print("Number of positives: ", positives)
+		print("Number of positives: %d (out of %d scanners applied)" % (positives, total))
+		#print("sha1: %s" % json_response.get('sha256'))
+		print("verbose_msg: %s" % json_response.get('verbose_msg'))
 		if positives == 0:
-			print (hash + ' is not malicious')
+			print(Fore.GREEN + hash + ' is not malicious' + Fore.RESET)
 		else:
-			print (hash + ' is malicious')
+			print(Fore.RED + hash + ' is malicious' + Fore.RESET)
 		scans = json_response.get('scans')
 		for key in scans:
-			if scans[key]['detected']: print(key, "v", scans[key]['version'], ": ", scans[key]['detected'])
+			if scans[key]['detected']: 
+				print(Fore.RED, key, "v", scans[key]['version'], ": ", scans[key]['detected'], Fore.RESET)
 			
 	else:
 		print (hash + ' could not be searched. Please try again later.')
 	print("")
 	#print(json_response)
+
 
 def main():
 	global config
@@ -124,13 +130,13 @@ def main():
 			return
 		print("")
 	#calculate hash of file
-	print("calculating hash...")
+	print("calculating sha1 hash...")
 	hash = hashlib.sha1()
 	with open(args.input_file,'rb') as fp:
 		for chunk in iter(lambda: fp.read(4096), b""):
 			hash.update(chunk)
 	strhash = hash.hexdigest()
-	print("done. sending scan request...")
+	print("done. sending scan request...\n")
 	scan(strhash.strip(), args.log_output) #args.verbose
 	print("done")
 
