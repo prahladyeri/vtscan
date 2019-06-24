@@ -56,7 +56,7 @@ def fileexists(filepath):
 
 def scan(hash, log_output=False):
 	if 'api_key' not in config or config['api_key'] == "":
-		print("VirusTotal API key is empty.\nKindly register an account on https://www.virustotal.com if you haven't, get your API Key from community profile and then run this program with --config argument to configure it.\n\nRefer this link for more help: https://www.virustotal.com/en/documentation/public-api/")
+		raise Exception("api key is missing")
 		return
 
 	#print("verbose output: ",verbose)
@@ -109,17 +109,30 @@ def main():
 		return
 
 	if config == None or config['api_key'] == "":
+		a = """VirusTotal API key is empty. To obtain an API Key:
+
+[1] Register an account on https://www.virustotal.com if you haven't. 
+[2] Sign in and get your API Key from community profile.
+[3] Enter configuration values below.
+
+(Refer this link for more help: https://www.virustotal.com/en/documentation/public-api/)"""
+
+		print(a)
 		config = cfgsaver.get_from_cmd(pkg_name, config_keys)
 		if config == None:
 			print("Cound't read config values, please start the program again using --config parameter")
 			return
+		print("")
 	#calculate hash of file
+	print("calculating hash...")
 	hash = hashlib.sha1()
 	with open(args.input_file,'rb') as fp:
 		for chunk in iter(lambda: fp.read(4096), b""):
 			hash.update(chunk)
 	strhash = hash.hexdigest()
+	print("done. sending scan request...")
 	scan(strhash.strip(), args.log_output) #args.verbose
+	print("done")
 
 # execute the program
 if __name__ == '__main__':
