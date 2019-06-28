@@ -1,14 +1,13 @@
 ![pypi](https://img.shields.io/pypi/v/vtscan.svg)
 ![python](https://img.shields.io/pypi/pyversions/vtscan.svg)
-![implementation](https://img.shields.io/pypi/implementation/vtscan.svg)
-<!-- https://img.shields.io/travis/prahladyeri/vtscan/master.svg -->
 ![docs](https://readthedocs.org/projects/vtscan/badge/?version=latest)
 ![license](https://img.shields.io/github/license/prahladyeri/vtscan.svg)
 ![last-commit](https://img.shields.io/github/last-commit/prahladyeri/vtscan.svg)
-<!--![commit-activity](https://img.shields.io/github/commit-activity/w/prahladyeri/vtscan.svg)-->
 [![donate](https://img.shields.io/badge/-Donate-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JM8FUXNFUK6EU)
 [![follow](https://img.shields.io/twitter/follow/prahladyeri.svg?style=social)](https://twitter.com/prahladyeri)
+
 # VTScan
+
 Utility to scan for malicious files using the VirusTotal API
 
 # Installation
