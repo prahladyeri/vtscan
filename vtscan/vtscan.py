@@ -65,7 +65,7 @@ def scan(hash, log_output=False):
 	url = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
 	json_response = url.json()
 	if log_output:
-		ss = json.dumps(json_response)
+		ss = json.dumps(json_response, indent=4)
 		open('output.json','w').write(ss)
 		print("Logged output to output.json")
 	response = int(json_response.get('response_code'))
