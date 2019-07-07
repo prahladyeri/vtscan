@@ -16,7 +16,8 @@ Utility to scan for malicious files using the VirusTotal API
 
 # Usage
 
-	vtscan </path/to/filename>
+![sample screen](https://raw.githubusercontent.com/prahladyeri/vtscan/master/screenshot.png)
+
 
 # Notes
 
