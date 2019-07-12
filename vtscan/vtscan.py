@@ -46,6 +46,7 @@ def checkhash(hsh):
 			
 def fileexists(filepath):
 	try:
+		#if filepath == None: return ""
 		if os.path.isfile(filepath):
 			return filepath
 		else:
@@ -98,17 +99,17 @@ def scan(hash, log_output=False):
 def main():
 	global config
 	#print('DEBUG', set(['-v', '--version']), sys.argv)
-	if '-v' in sys.argv or '--version' in sys.argv:
-		print( "%s version %s" % (__title__, __version__) )
-		return
 	parser = argparse.ArgumentParser()
-	parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt')
+	parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt', nargs="?")
 	parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to json file')
 	parser.add_argument('-v', '--version', help='Version', action='store_true')
 	parser.add_argument('-c', '--config', help='Version', action='store_true')
 	args = parser.parse_args()
 	
-	if args.config:
+	if args.version:
+		print( "%s version %s" % (__title__, __version__) )
+		return
+	elif args.config:
 		config = cfgsaver.get_from_cmd(pkg_name, config_keys)
 		if config == None:
 			print("Cound't read config values, please start the program again using --config parameter")
@@ -129,6 +130,10 @@ def main():
 			print("Cound't read config values, please start the program again using --config parameter")
 			return
 		print("")
+	#check if filename is valid
+	if args.input_file == None:
+		print("Filename can't be empty")
+		return
 	#calculate hash of file
 	print("calculating sha1 hash...")
 	hash = hashlib.sha1()
