@@ -56,14 +56,27 @@ def fileexists(filepath):
             print(ex)
 
 
-def scan(hash, log_output=False):
+def scan(hash, log_output=False, is_file=False):
     if 'api_key' not in config or config['api_key'] == "":
         raise Exception("api key is missing")
         return
 
     #print("verbose output: ",verbose)
-    params = {'apikey': config['api_key'], 'resource': hash, } #'allinfo': verbose
-    url = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
+    params, files= {}, {}
+    if is_file: # hash is actually the filename
+        params = {'apikey': config['api_key']} #'allinfo': verbose
+        files = {'file': (os.path.split(hash)[1], open(hash, 'rb'))}
+        print("Uploading file...")
+        url = requests.post('https://www.virustotal.com/vtapi/v2/file/scan', params=params, files=files)
+        json_response = url.json()
+        #print("json_response:", json_response)
+        if 'sha256' in json_response.keys():
+            print("Performing scan. If it doesn't work, restart the program again")
+            scan(json_response.get('sha256'), log_output, False)
+        return
+    else:
+        params = {'apikey': config['api_key'], 'resource': hash, } #'allinfo': verbose
+        url = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
     json_response = url.json()
     if log_output:
         ss = json.dumps(json_response, indent=4)
@@ -72,6 +85,7 @@ def scan(hash, log_output=False):
     response = int(json_response.get('response_code'))
     if response == 0:
         print (Fore.YELLOW + 'Not found in VT Database' + Fore.RESET)
+        return "not_found"
     elif response == 1:
         print ('Found in VT Database')
         print ("permalink: ", json_response.get('permalink'))
@@ -140,7 +154,11 @@ def main():
             hash.update(chunk)
     strhash = hash.hexdigest()
     print("done. sending scan request...\n")
-    scan(strhash.strip(), args.log_output) #args.verbose
+    result = scan(strhash.strip(), args.log_output, False) #args.verbose
+    if result == 'not_found':
+        ss = input("Do you want to upload this file to vtscan database? (Y/n):")
+        if ss.lower() == 'y': # @todo: make sure the file is less than 32MB
+            result = scan(args.input_file, args.log_output, True)
     print("done")
 
 # execute the program
