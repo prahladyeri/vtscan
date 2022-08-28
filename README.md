@@ -22,7 +22,11 @@ Command line tool to scan for malicious files using the VirusTotal API
 
 # Notes
 
-It will prompt you to register a free account at [https://www.virustotal.com ](https://www.virustotal.com ) when you run for the first time. Then, you'll have to get your API Key and put it in the `config.json` in order for the scanning script to work.
+You'll need a VirusTotal API key to use this program. For this, you'll have to register a free account at [https://www.virustotal.com](https://www.virustotal.com). Once you have the API key, you just put it in the `config.json` which is found at package install path upon installation. On Windows OS, this path typically works out to:
+
+```bash
+"%LocalAppData%\Programs\Python\PythonX-Y\Lib\site-packages\vtscan
+```
 
 ## Donation
 
