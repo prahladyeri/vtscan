@@ -30,7 +30,9 @@ You'll need a VirusTotal API key to use this program. For this, you'll have to r
 
 ## Donation
 
-Please consider donating if this tool has helped you in any way. You can also hire me through [upwork](https://www.upwork.com/freelancers/~01e977ff45b62e031c) or [fiverr](https://www.fiverr.com/prahladyeri) to get professional support and customization.
+Please consider donating if this tool has helped you in any way.
 
 - [Donate through PayPal](https://www.paypal.me/prahladyeri)
 - [Donate through Patreon](https://www.patreon.com/prahladyeri)
+
+You can also hire me through [Upwork](https://www.upwork.com/freelancers/~01e977ff45b62e031c) or [Fiverr](https://www.fiverr.com/prahladyeri) or [contact me directly](mailto:prahladyeri@yahoo.com) to get professional support and customization.
