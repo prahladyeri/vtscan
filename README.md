@@ -28,6 +28,12 @@ You'll need a VirusTotal API key to use this program, you can get one by registe
 %userprofile%\.config\vtscan\
 ```
 
+```json
+{
+	"api_key": "XXXXXXXXXXXXXX"
+}
+```
+
 ## Donation
 
 Please consider donating if this tool has helped you in any way.
