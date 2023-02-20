@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
 import os
+import json
 import vtscan
 from vtscan import __version__, __description__, __author__, __email__, __license__
+from vtscan.vtscan import pkg_name, cfg
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 import shutil
 
-pkg_name = 'vtscan'
+#pkg_name = 'vtscan'
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
         install.run(self)
-        fpath = os.path.join(self.install_lib, pkg_name)
-        fpath = os.path.join(fpath, "cfg.json")
-        cfg_dir = os.path.join(os.path.expanduser("~"), ".config/%s" % pkg_name)
+        cfg_dir = os.path.join(os.path.expanduser("~"), ".config/")
         if not os.path.isdir(cfg_dir): os.makedirs(cfg_dir)
-        tpath = os.path.join(cfg_dir, "cfg.json")
+        tpath = os.path.join(cfg_dir, pkg_name+"-settings.json")
         if os.path.isfile(tpath):
             print("config file already exists")
             return
-        shutil.move(fpath, tpath)
-
+        else:
+            open(tpath, 'w').write( json.dumps(cfg) )
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -41,7 +41,7 @@ s = setup(
             "vtscan = vtscan.vtscan:main",
         ],
     },
-    install_requires=['cfgsaver', 'requests', 'colorama'],
+    install_requires=['requests', 'colorama'],
     python_requires = ">= 3.4",
     author=__author__,
     author_email=__email__,

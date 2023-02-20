@@ -17,22 +17,26 @@ Command line tool to scan for malicious files using the VirusTotal API
 
 # Usage
 
-![sample screen](https://raw.githubusercontent.com/prahladyeri/vtscan/master/screenshot.png)
+```bash
+C:\> vtscan c:\programs\FileZilla-3.44.0\filezilla.exe
+calculating sha1 hash...
+done. sending scan request...
 
+Found in VT Database
+permalink:  https://www.virustotal.com/gui/file/9bbf15a489e7e109f8e238013846a29448c7994a46b7507be239a2aeeccf99f7/detection/f-9bbf15a489e7e109f8e238013846a29448c7994a46b7507be239a2aeeccf99f7-1656398328
+Number of positives: 0 (out of 66 scanners applied)
+verbose_msg: Scan finished, information embedded
+7a37556cc8d665b508dd118fb3baec27b7891fb1 is not malicious
+
+done
+
+C:\>
+```
 
 # Notes
 
-You'll need a VirusTotal API key to use this program, you can get one by registering a free account at [www.virustotal.com](https://www.virustotal.com). Once you have the API key, you can just put it in the `cfg.json` on the following path:
+You'll need a VirusTotal API key to use this program, you can get one by registering a free account at [www.virustotal.com](https://www.virustotal.com). Once you have the API key, you can just put it in the `%userprofile%\.config\vtscan-settings.json` directory.
 
-```bash
-%userprofile%\.config\vtscan\
-```
-
-```json
-{
-	"api_key": "XXXXXXXXXXXXXX"
-}
-```
 
 ## Donation
 

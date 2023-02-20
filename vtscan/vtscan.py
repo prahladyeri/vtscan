@@ -11,13 +11,28 @@ import os, sys
 import time
 import hashlib
 import json
-from cfgsaver import cfgsaver
 from vtscan import __title__, __description__, __version__
 from colorama import Fore, Style
 
 pkg_name = "vtscan"
-config_keys = ['api_key']
-config = cfgsaver.get(pkg_name)
+cfg = {"api_key": ""} #default
+
+#@todo: move this to a common util library
+def get_config_path():
+    return os.path.join(os.path.expanduser("~/.config/"), pkg_name+'-settings.json')
+
+def load_config():
+    global cfg
+    #tpath = sysconfig.get_path('purelib') + os.sep + "siterank"
+    tpath = os.path.expanduser("~/.config/")
+    if not os.path.exists(tpath):
+        os.makedirs(tpath)
+    cfg_path = os.path.join(tpath, pkg_name+'-settings.json')
+    if not os.path.exists(cfg_path):
+        open(cfg_path, 'w').write(json.dumps(cfg))
+    else:
+        cfg = json.loads( open(cfg_path, 'r').read())
+    return
 
 
 def checkkey(kee):
@@ -57,14 +72,14 @@ def fileexists(filepath):
 
 
 def scan(hash, log_output=False, is_file=False):
-    if 'api_key' not in config or config['api_key'] == "":
+    if cfg['api_key'] == "":
         raise Exception("api key is missing")
         return
 
     #print("verbose output: ",verbose)
     params, files= {}, {}
     if is_file: # hash is actually the filename
-        params = {'apikey': config['api_key']} #'allinfo': verbose
+        params = {'apikey': cfg['api_key']} #'allinfo': verbose
         files = {'file': (os.path.split(hash)[1], open(hash, 'rb'))}
         print("Uploading file...")
         url = requests.post('https://www.virustotal.com/vtapi/v2/file/scan', params=params, files=files)
@@ -75,7 +90,7 @@ def scan(hash, log_output=False, is_file=False):
             scan(json_response.get('sha256'), log_output, False)
         return
     else:
-        params = {'apikey': config['api_key'], 'resource': hash, } #'allinfo': verbose
+        params = {'apikey': cfg['api_key'], 'resource': hash, } #'allinfo': verbose
         url = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
     json_response = url.json()
     if log_output:
@@ -109,39 +124,30 @@ def scan(hash, log_output=False, is_file=False):
     print("")
 
 def main():
-    global config
     #print('DEBUG', set(['-v', '--version']), sys.argv)
     parser = argparse.ArgumentParser()
     parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt', nargs="?")
     parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to output.json file')
     parser.add_argument('-v', '--version', help='Version', action='store_true')
-    parser.add_argument('-c', '--config', help='Version', action='store_true')
     args = parser.parse_args()
     
     if args.version:
         print( "%s version %s" % (__title__, __version__) )
         return
-    elif args.config:
-        config = cfgsaver.get_from_cmd(pkg_name, config_keys)
-        if config == None:
-            print("Cound't read config values, please start the program again using --config parameter")
-        return
-
-    if config == None or config['api_key'] == "":
+    
+    load_config()
+    if cfg['api_key'] == "":
         a = """VirusTotal API key is empty. To obtain an API Key:
 
 [1] Register an account on https://www.virustotal.com if you haven't. 
 [2] Sign in and get your API Key from community profile.
-[3] Enter configuration values below.
+[3] Enter configuration values in %s.
+[4] Restart this program.
 
 (Refer this link for more help: https://www.virustotal.com/en/documentation/public-api/)"""
 
-        print(a)
-        config = cfgsaver.get_from_cmd(pkg_name, config_keys)
-        if config == None:
-            print("Cound't read config values, please start the program again using --config parameter")
-            return
-        print("")
+        print(a % get_config_path())
+        return
     #check if filename is valid
     if args.input_file == None:
         print("Filename can't be empty")
