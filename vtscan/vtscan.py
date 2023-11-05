@@ -12,12 +12,26 @@ import time
 import hashlib
 import json
 from vtscan import __title__, __description__, __version__
-from colorama import Fore, Style
 
 pkg_name = "vtscan"
 cfg = {"api_key": ""} #default
 
 #@todo: move this to a common util library
+CSI = '\033['
+class Color():
+    BLACK           = CSI + '30m'
+    RED             = CSI + '31m'
+    GREEN           = CSI + '32m'
+    YELLOW          = CSI + '33m'
+    BLUE            = CSI + '34m'
+    MAGENTA         = CSI + '35m'
+    CYAN            = CSI + '36m'
+    WHITE           = CSI + '37m'
+    RESET           = CSI + '39m'
+
+clr = Color()
+
+
 def get_config_path():
     return os.path.join(os.path.expanduser("~/.config/"), pkg_name+'-settings.json')
 
@@ -99,7 +113,7 @@ def scan(hash, log_output=False, is_file=False):
         print("Logged output to output.json")
     response = int(json_response.get('response_code'))
     if response == 0:
-        print (Fore.YELLOW + 'Not found in VT Database' + Fore.RESET)
+        print (clr.YELLOW + 'Not found in VT Database' + clr.RESET)
         return "not_found"
     elif response == 1:
         print ('Found in VT Database')
@@ -111,14 +125,14 @@ def scan(hash, log_output=False, is_file=False):
         #print("sha1: %s" % json_response.get('sha256'))
         print("verbose_msg: %s" % json_response.get('verbose_msg'))
         if positives == 0:
-            print(Fore.GREEN + hash + ' is not malicious' + Fore.RESET)
+            print(clr.GREEN + hash + ' is not malicious' + clr.RESET)
         else:
-            print(Fore.RED + hash + ' is malicious' + Fore.RESET)
+            print(clr.RED + hash + ' is malicious' + clr.RESET)
             print("")
         scans = json_response.get('scans')
         for key in scans:
             if scans[key]['detected']: 
-                print(Fore.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), Fore.RESET)
+                print(clr.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), clr.RESET)
     else:
         print (hash + ' could not be searched. Please try again later.')
     print("")
