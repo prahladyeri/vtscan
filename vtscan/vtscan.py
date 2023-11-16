@@ -17,6 +17,7 @@ cache = {"data": {}}
 
 #@todo: move this to a common util library
 CSI = '\033['
+
 class Color():
     BLACK           = CSI + '30m'
     RED             = CSI + '31m'
