@@ -95,12 +95,13 @@ def fileexists(filepath):
             print(ex)
 
 def print_scan(data):
-    print ("permalink: ", data.get('permalink'))
+    #print ("permalink: ", data.get('permalink'))
+    print("hash: %s" % data.get('sha1'))
     positives = int(data.get('positives'))
     total = int(data.get('total'))
     # mcafee = str(data.get('report'))
     print("Number of positives: %d (out of %d scanners applied)" % (positives, total))
-    #print("sha1: %s" % data.get('sha256'))
+    #
     print("verbose_msg: %s" % data.get('verbose_msg'))
     scans = data.get('scans')
     for key in scans:
