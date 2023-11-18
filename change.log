@@ -1,3 +1,7 @@
+build: 1.0.19
+fix: Fixed empty cached entry in case of hashes not found
+fix: concise hash display instead of long url
+
 build: 1.0.18
 feat: added cache feature
 
