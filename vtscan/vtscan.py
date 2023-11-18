@@ -101,7 +101,6 @@ def print_scan(data):
     total = int(data.get('total'))
     # mcafee = str(data.get('report'))
     print("Number of positives: %d (out of %d scanners applied)" % (positives, total))
-    #
     print("verbose_msg: %s" % data.get('verbose_msg'))
     scans = data.get('scans')
     for key in scans:
@@ -136,7 +135,7 @@ def scan(hash, log_output=False, is_file=False):
         resp = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
     json_response = resp.json()
     # store to cache if not already
-    if hash not in cache['data'].keys():
+    if json_response['response_code'] > 0 and hash not in cache['data'].keys():
         cache['data'][hash] = dict(json_response)
         open(get_config_dir() + "cache.json", 'w').write(json.dumps(cache))
     if log_output:
