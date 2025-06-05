@@ -124,33 +124,49 @@ def scan(hash, log_output=False, is_file=False):
         files = {'file': (os.path.split(hash)[1], open(hash, 'rb'))}
         print("Uploading file...")
         resp = requests.post('https://www.virustotal.com/vtapi/v2/file/scan', params=params, files=files)
-        json_response = resp.json()
-        #print("json_response:", json_response)
+        if resp.status_code != 200:
+            print(f"Upload failed. Status: {resp.status_code}, Body: {resp.text}")
+            return        
+        try:
+            json_response = resp.json()
+        except ValueError:
+            print("Response was not valid JSON. Raw content:")
+            print(resp.text)
+            return            
         if 'sha256' in json_response.keys():
-            print("Performing scan. If it doesn't work, restart the program again")
+            print("File uploaded. Performing scan...")
             scan(json_response.get('sha256'), log_output, False)
-        return
     else:
         params = {'apikey': cfg['api_key'], 'resource': hash, } #'allinfo': verbose
         resp = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
-    json_response = resp.json()
-    # store to cache if not already
-    if json_response['response_code'] > 0 and hash not in cache['data'].keys():
-        cache['data'][hash] = dict(json_response)
-        open(get_config_dir() + "cache.json", 'w').write(json.dumps(cache))
-    if log_output:
-        ss = json.dumps(json_response, indent=4)
-        open('output.json','w').write(ss)
-        print("Logged output to output.json")
-    response = int(json_response.get('response_code'))
-    if response == 0:
-        print (clr.YELLOW + 'Not found in VT Database' + clr.RESET)
-        return 'not found'
-    elif response == 1:
-        print ('Found in VT Database')
-        print_scan(json_response)
-    else:
-        print (hash + ' could not be searched. Please try again later.')
+        if resp.status_code == 204:
+            print("Rate limit exceeded (HTTP 204). Try again after a minute.")
+            return
+        elif resp.status_code != 200:
+            print(f"Request failed. Status: {resp.status_code}, Body: {resp.text}")
+            return        
+        try:
+            json_response = resp.json()
+        except ValueError:
+            print("Response was not valid JSON. Raw content:")
+            print(resp.text)
+            return        
+        if json_response['response_code'] > 0 and hash not in cache['data'].keys():
+            cache['data'][hash] = dict(json_response)
+            open(get_config_dir() + "cache.json", 'w').write(json.dumps(cache))
+        if log_output:
+            ss = json.dumps(json_response, indent=4)
+            open('output.json','w').write(ss)
+            print("Logged output to output.json")
+        response = int(json_response.get('response_code'))
+        if response == 0:
+            print (clr.YELLOW + 'Not found in VT Database' + clr.RESET)
+            return 'not found'
+        elif response == 1:
+            print ('Found in VT Database')
+            print_scan(json_response)
+        else:
+            print (hash + ' could not be searched. Please try again later.')
 
 def main():
     #print('DEBUG', set(['-v', '--version']), sys.argv)
