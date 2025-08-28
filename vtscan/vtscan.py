@@ -1,7 +1,7 @@
 ##
-# VTScan - Utility to scan for malicious files using the VirusTotal API
+# vtscan.py - Utility to scan for malicious files using the VirusTotal API
 #
-# @author Prahlad Yeri<prahladyeri@yahoo.com>
+# @author Prahlad Yeri <prahladyeri@yahoo.com>
 # @license MIT
 import requests
 import argparse
