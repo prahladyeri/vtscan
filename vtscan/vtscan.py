@@ -34,7 +34,7 @@ clr = Color()
 
 def get_config_dir():
     #return os.path.join(os.path.expanduser("~/.config/"), pkg_name+'-settings.json')
-    tpath = os.path.expanduser("~/.config/vtscan/")
+    tpath = os.path.expanduser(f"~/.config/{pkg_name}/")
     tpath = tpath.replace(os.sep, '/')
     if not os.path.exists(tpath):
         os.makedirs(tpath)

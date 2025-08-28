@@ -14,9 +14,9 @@ class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
         install.run(self)
-        cfg_dir = os.path.join(os.path.expanduser("~"), ".config/")
+        cfg_dir = os.path.join(os.path.expanduser("~"), f".config/{pkg_name}")
         if not os.path.isdir(cfg_dir): os.makedirs(cfg_dir)
-        tpath = os.path.join(cfg_dir, pkg_name+"-settings.json")
+        tpath = os.path.join(cfg_dir, "settings.json")
         if os.path.isfile(tpath):
             print("config file already exists")
             return
