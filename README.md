@@ -35,7 +35,7 @@ C:\>
 
 # Notes
 
-You'll need a VirusTotal API key to use this program, you can get one by registering a free account at [www.virustotal.com](https://www.virustotal.com). Once you have the API key, you can just put it in the `%userprofile%\.config\vtscan-settings.json` directory.
+You'll need a VirusTotal API key to use this program, you can get one by registering a free account at [www.virustotal.com](https://www.virustotal.com). Once you have the API key, you can just put it in the `%userprofile%\.config\vtscan\settings.json`.
 
 
 ## Donation
