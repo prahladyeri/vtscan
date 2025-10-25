@@ -9,7 +9,9 @@
 
 # vtscan
 
-Command line tool to scan for malicious files using the VirusTotal API
+Command line tool to scan for malicious files using the VirusTotal API.
+
+*Note that this is an unofficial hobbyist project, the official command-line scanner is [VirusTotal/vt-cli](https://github.com/VirusTotal/vt-cli).*
 
 # Installation
 
