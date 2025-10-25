@@ -14,6 +14,8 @@ from vtscan import __title__, __description__, __version__
 pkg_name = "vtscan"
 cfg = {"api_key": ""} #default
 cache = {"data": {}}
+NOISY = ['APEX', 'MaxSecure', 'Bkav', 'Jiangmin', 'Cylance', 'Antiy-AVL', 'Zillya', 'Rising',
+    'VirIT', 'Kingsoft']
 
 #@todo: move this to a common util library
 CSI = '\033['
@@ -99,15 +101,22 @@ def print_scan(data):
     print("hash: %s" % data.get('sha1'))
     positives = int(data.get('positives'))
     total = int(data.get('total'))
+    noisycnt = 0
     # mcafee = str(data.get('report'))
     print("Number of positives: %d (out of %d scanners applied)" % (positives, total))
     print("verbose_msg: %s" % data.get('verbose_msg'))
     scans = data.get('scans')
     for key in scans:
         if scans[key]['detected']: 
-            print(clr.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), clr.RESET)
+            if key in NOISY:
+                noisycnt += 1
+                positives -= 1
+            else:
+                print(clr.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), clr.RESET)
     if positives == 0:
         print(data.get('sha1') + ' is ' + clr.GREEN + 'likely good.' + clr.RESET)
+        if noisycnt > 0:
+            print(f"[{noisycnt} results hidden from noisy AVs prone to false detections.\nsee https://github.com/prahladyeri/vtscan/issues/8]")
     else:
         print(data.get('sha1') + ' is ' + clr.RED + 'likely malicious.' + clr.RESET)
 
@@ -171,7 +180,7 @@ def scan(hash, log_output=False, is_file=False):
 def main():
     #print('DEBUG', set(['-v', '--version']), sys.argv)
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_file', type=fileexists, help='Input File Location EX: /Desktop/Somewhere/input.txt', nargs="?")
+    parser.add_argument('input_file', type=fileexists, help="Input File Location EX: d:\\somedir\\input.txt", nargs="?")
     parser.add_argument('-l', '--log-output',  default=False, action='store_true', help='Log output to output.json file')
     parser.add_argument('-v', '--version', help='Version', action='store_true')
     args = parser.parse_args()
