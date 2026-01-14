@@ -10,29 +10,15 @@ import time
 import hashlib
 import json
 from vtscan import __title__, __description__, __version__
+from colorama import init, Fore, Style
+
+init()
 
 pkg_name = "vtscan"
 cfg = {"api_key": ""} #default
 cache = {"data": {}}
 NOISY = ['APEX', 'MaxSecure', 'Bkav', 'Jiangmin', 'Cylance', 'Antiy-AVL', 'Zillya', 'Rising',
     'VirIT', 'Kingsoft']
-
-#@todo: move this to a common util library
-CSI = '\033['
-
-class Color():
-    BLACK           = CSI + '30m'
-    RED             = CSI + '31m'
-    GREEN           = CSI + '32m'
-    YELLOW          = CSI + '33m'
-    BLUE            = CSI + '34m'
-    MAGENTA         = CSI + '35m'
-    CYAN            = CSI + '36m'
-    WHITE           = CSI + '37m'
-    RESET           = CSI + '39m'
-
-clr = Color()
-
 
 def get_config_dir():
     #return os.path.join(os.path.expanduser("~/.config/"), pkg_name+'-settings.json')
@@ -112,13 +98,13 @@ def print_scan(data):
                 noisycnt += 1
                 positives -= 1
             else:
-                print(clr.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), clr.RESET)
+                print(Fore.RED + key, "v", scans[key]['version'], ": ", str(scans[key]['result']), Fore.RESET)
     if positives == 0:
-        print(data.get('sha1') + ' is ' + clr.GREEN + 'likely good.' + clr.RESET)
+        print(data.get('sha1') + ' is ' + Fore.GREEN + 'likely good.' + Fore.RESET)
         if noisycnt > 0:
             print(f"[{noisycnt} results hidden from noisy AVs prone to false detections.\nsee https://github.com/prahladyeri/vtscan/issues/8]")
     else:
-        print(data.get('sha1') + ' is ' + clr.RED + 'likely malicious.' + clr.RESET)
+        print(data.get('sha1') + ' is ' + Fore.RED + 'likely malicious.' + Fore.RESET)
 
 def scan(hash, log_output=False, is_file=False):
     global cache
@@ -169,7 +155,7 @@ def scan(hash, log_output=False, is_file=False):
             print("Logged output to output.json")
         response = int(json_response.get('response_code'))
         if response == 0:
-            print (clr.YELLOW + 'Not found in VT Database' + clr.RESET)
+            print (Fore.YELLOW + 'Not found in VT Database' + Fore.RESET)
             return 'not found'
         elif response == 1:
             print ('Found in VT Database')
